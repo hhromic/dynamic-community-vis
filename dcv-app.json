@@ -1,0 +1,12 @@
+{
+  "apps" : [{
+    "name": "dcv-app",
+    "exec_mode": "fork",
+    "script": "http-server",
+    "args": ["-p", "9876"],
+    "exec_interpreter": "none",
+    "watch": [
+      "public"
+    ]
+  }]
+}
