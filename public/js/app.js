@@ -1,5 +1,7 @@
+/* jshint esversion: 6 */
+
 // show tooltip at data point 'd' using step communities data 'steps'
-function showTooltip(d, steps) {
+function showTooltip(d, steps, dataKeys, colorKey) {
   d3.select('body').selectAll('.tooltip').remove();
   const tooltip = d3.select('body')
     .append('div')
@@ -23,10 +25,12 @@ function showTooltip(d, steps) {
     d3.event.pageX - ARROW_MARGIN * FONT_SIZE - ARROW_WIDTH / 2;
 
   const community = steps[d.step].communities[d.community];
+  const data = dataKeys.map(k => `<p>${k}='${community.data[k]}'</p>`).join('');
   const time = DATE_FORMAT(new Date(steps[d.step].time * 1000));
 
   tooltip.html(`<div class="community">
-      <p class="attribute">${community.data['topic']}</p>
+      <p class="attribute">${community.data[colorKey]}</p>
+      <p><b>Data:</b></p>${data}
       <p><b>Time (UTC):</b> ${time}</p>
       <p>${community.users.length} user(s)</p>
     </div>`)
@@ -43,7 +47,7 @@ function hideTooltip() {
 }
 
 // initialise the chart display
-function initChart(timeline, events, steps, defaultColorKey, status) {
+function initChart(timeline, events, steps, dataKeys, colorKey, status) {
   status.text('initialising chart ...');
   const colors = d3.scale.category20();
   const numSteps = Object.keys(steps).length;
@@ -53,11 +57,11 @@ function initChart(timeline, events, steps, defaultColorKey, status) {
     .date(d => new Date(steps[d.step].time * 1000))
     .labelsWidth(100)
     .eventColor((d, i) => {
-      return colors(steps[d.step].communities[d.community].data[defaultColorKey]);
+      return colors(steps[d.step].communities[d.community].data[colorKey]);
     })
     .events(events)
     .dropSize(d => 8)
-    .mouseover((data) => showTooltip(data, steps))
+    .mouseover((data) => showTooltip(data, steps, dataKeys, colorKey))
     .mouseout(hideTooltip);
 
   d3.select('#chart-panel').style('opacity', 1);
@@ -69,8 +73,9 @@ function initChart(timeline, events, steps, defaultColorKey, status) {
 
 // load data to be displayed
 function loadData(dataset, minSteps, status) {
-  var timeline, events = {}, steps, defaultColorKey;
   status.text('loading dataset "' + dataset + '" with ' + minSteps + ' minimum steps ...');
+  var timeline, events = {}, steps, dataKeys;
+  const colorKeys = d3.select('#colorKeys');
   d3.json('data/' + dataset + '.timeline.json', (err, data) => {
     if (err) return console.warn(err);
 
@@ -98,11 +103,19 @@ function loadData(dataset, minSteps, status) {
       status.text('loading step communities data ...');
       d3.json('data/' + dataset + '.steps.json', (err, data) => {
         if (err) return console.warn(err);
-        steps = data['steps'];
-        defaultColorKey = data['default_color_key'];
+        steps = data.steps;
+        dataKeys = data.data_keys;
+        colorKeys.selectAll('*').remove();
+        dataKeys.forEach(k => colorKeys.append('option').property('value', k).text(k));
 
-        // finally, initialise the chart with all loaded data
-        initChart(timeline, events, steps, defaultColorKey, status);
+        // initialise the chart with all loaded data on color key change
+        colorKeys.on('change', event => {
+          initChart(timeline, events, steps, dataKeys,
+                    colorKeys.property('value'), status);
+        });
+
+        // trigger color key selection
+        colorKeys.on('change')();
       });
     });
   });

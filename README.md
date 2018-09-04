@@ -92,7 +92,7 @@ For the visualisation you also must generate a `example.steps.json` JSON file fr
         },
         ...
       },
-      "default_color_key": "KEY_IN_OBJECT_OF_DATA_FIELD"
+      "data_keys": ["KEY_IN_DATA_OBJ", "KEY_IN_DATA_OBJ", ... ]
     }
 
 This file provides information about the real times used in your static steps and the community meta-data to be visualised by the tool.

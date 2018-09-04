@@ -48,6 +48,11 @@ html, body {
   margin-right: 12px;
 }
 
+.panel #colorKeys {
+  padding: 2px;
+  margin-right: 12px;
+}
+
 #chart-container {
   width: 90%;
 }
