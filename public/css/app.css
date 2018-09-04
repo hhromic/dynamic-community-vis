@@ -9,6 +9,11 @@ html, body {
   font-size: 14px;
 }
 
+a:link { color: DodgerBlue; text-decoration: none; }
+a:visited { color: DodgerBlue; text-decoration: none; }
+a:hover { color: blue; text-decoration: underline; }
+a:active { color: blue; text-decoration: none; }
+
 .title {
   background: SteelBlue;
   padding: 8px;
@@ -55,6 +60,12 @@ html, body {
 
 #chart-container {
   width: 90%;
+}
+
+.footer {
+  color: gray;
+  padding: 8px;
+  text-align: center;
 }
 
 .drop {
