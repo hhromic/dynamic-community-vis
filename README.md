@@ -101,7 +101,7 @@ This file provides information about the real times used in your static steps an
 
 To build the evolutionary events for visualisation. Run this script to generate the `example.timeline.json` and `example.events.json` files:
 
-    scripts/tracker2vis.py \
+    python/tracker2vis.py \
         --timeline example.timeline \
         --output example.timeline.json \
         --events example.events.json
