@@ -106,6 +106,9 @@ To build the evolutionary events for visualisation. Run this script to generate 
         --output example.timeline.json \
         --events example.events.json
 
+This invocation assumes that the original static step files (`*.comm`) are in the current directory.
+If this is not the case, you can optionally provide the directory name containing these files using the argument `--steps-dir <DIR>`.
+
 The output `example.timeline.json` file should look similar to this:
 
     [
