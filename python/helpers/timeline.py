@@ -99,7 +99,7 @@ class Timeline(list):
     def find_splits(self):
         """Find split events, removing the shared steps in the branching (regularize).
            A branching occurs with the creation of an additional dynamic community
-           D_j that shares the timeline of D_i up to time t − 1, but has a distinct
+           D_j that shares the timeline of D_i up to time t-1, but has a distinct
            timeline from time t onwards."""
         splits = TimelineEvents()
         for d_i, d_j in combinations(self, r=2):
@@ -121,7 +121,7 @@ class Timeline(list):
     def find_merges(self):
         """Find merge events, removing the shared steps in the merging (regularize).
            A merge occurs if two distinct dynamic communities (D_i, D_j) observed at
-           time t−1 match to a single step community C_ta at time t. The pair subsequently
+           time t-1 match to a single step community C_ta at time t. The pair subsequently
            share a common timeline starting from C_ta."""
         merges = TimelineEvents()
         for d_i, d_j in combinations(self, r=2):
